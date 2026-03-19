@@ -4,22 +4,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Definition of tree node
+// Definition for a binary tree node
 struct TreeNode {
     int val;
     struct TreeNode *left;
     struct TreeNode *right;
 };
 
-// Function to create new node
-struct TreeNode* newNode(int val) {
-    struct TreeNode* node = (struct TreeNode*)malloc(sizeof(struct TreeNode));
-    node->val = val;
-    node->left = node->right = NULL;
-    return node;
+// Create new node
+struct TreeNode* newNode(int x) {
+    struct TreeNode* n = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    n->val = x;
+    n->left = n->right = NULL;
+    return n;
 }
 
-// Function to find max depth (RECURSION)
+// Function to calculate max depth
 int maxDepth(struct TreeNode* root) {
     if (root == NULL)
         return 0;
@@ -30,54 +30,19 @@ int maxDepth(struct TreeNode* root) {
     return (left > right ? left : right) + 1;
 }
 
+// -------- MAIN FUNCTION --------
 int main() {
-    int n;
-    scanf("%d", &n);
+    // Example tree: [3,9,20,null,null,15,7]
 
-    if (n == 0) {
-        printf("0");
-        return 0;
-    }
+    struct TreeNode* root = newNode(3);
+    root->left = newNode(9);
+    root->right = newNode(20);
+    root->right->left = newNode(15);
+    root->right->right = newNode(7);
 
-    int arr[n];
-    for (int i = 0; i < n; i++)
-        scanf("%d", &arr[i]);
+    int depth = maxDepth(root);
 
-    if (arr[0] == -1) {
-        printf("0");
-        return 0;
-    }
-
-    // Build tree using queue (level order)
-    struct TreeNode* root = newNode(arr[0]);
-
-    struct TreeNode* queue[100];
-    int front = 0, rear = 0;
-
-    queue[rear++] = root;
-
-    int i = 1;
-
-    while (i < n) {
-        struct TreeNode* curr = queue[front++];
-
-        // Left child
-        if (arr[i] != -1) {
-            curr->left = newNode(arr[i]);
-            queue[rear++] = curr->left;
-        }
-        i++;
-
-        // Right child
-        if (i < n && arr[i] != -1) {
-            curr->right = newNode(arr[i]);
-            queue[rear++] = curr->right;
-        }
-        i++;
-    }
-
-    // Print max depth
-    printf("%d", maxDepth(root));
+    printf("Maximum Depth: %d\n", depth);
 
     return 0;
 }
