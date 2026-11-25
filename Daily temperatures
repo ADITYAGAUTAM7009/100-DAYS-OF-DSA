@@ -1,0 +1,27 @@
+#include <stdlib.h>
+
+int* dailyTemperatures(int* temperatures, int temperaturesSize, int* returnSize) {
+    int* answer = (int*)malloc(temperaturesSize * sizeof(int));
+    int* stack = (int*)malloc(temperaturesSize * sizeof(int));
+
+    int top = -1;
+
+    *returnSize = temperaturesSize;
+
+    for (int i = 0; i < temperaturesSize; i++) {
+                while (top >= 0 &&
+               temperatures[i] > temperatures[stack[top]]) {
+            
+            int previousDay = stack[top--];
+            answer[previousDay] = i - previousDay;
+        }
+        stack[++top] = i;
+    }
+    while (top >= 0) {
+        answer[stack[top--]] = 0;
+    }
+
+    free(stack);
+
+    return answer;
+}
